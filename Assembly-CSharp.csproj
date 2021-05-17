@@ -56,14 +56,17 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\ControlEntities.cs" />
     <Compile Include="Assets\Scripts\CameraMover.cs" />
     <Compile Include="Assets\Scripts\NavMeshLink.cs" />
-    <Compile Include="Assets\Scripts\AutoGather.cs" />
     <Compile Include="Assets\Scripts\NavMeshModifier.cs" />
+    <Compile Include="Assets\Scripts\AgentController.cs" />
     <Compile Include="Assets\Scripts\NavMeshModifierVolume.cs" />
-    <Compile Include="Assets\AgentController.cs" />
-    <Compile Include="Assets\GameManager.cs" />
+    <Compile Include="Assets\PlacementManager.cs" />
+    <Compile Include="Assets\Scripts\Unit.cs" />
+    <Compile Include="Assets\Scripts\Gatherer.cs" />
+    <Compile Include="Assets\Scripts\Fighter.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -84,6 +87,7 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+     <None Include="Assets\Shaders\Hologram.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />

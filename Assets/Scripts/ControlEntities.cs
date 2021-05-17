@@ -4,16 +4,30 @@ using UnityEngine.AI;
 
 public class ControlEntities : MonoBehaviour
 {
+    public static ControlEntities instance;
+
     [Header("Group Selection Box")]
     public RectTransform groupSelectionBox;
     public Camera cam;
     public Vector2 startGroupSelectionPosition;
 
     [Space]
-    public List<AgentController> selectedUnits = new List<AgentController>();
+    public List<Unit> selectedUnits = new List<Unit>();
 
     private static int[] positionsPerRing = new int[] { 6, 14, 24 };
     private static int maxPositions = 1 + positionsPerRing[0] + positionsPerRing[1] + positionsPerRing[2];
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -22,12 +36,12 @@ public class ControlEntities : MonoBehaviour
         MoveUnits();
     }
 
-    void SelectUnit(AgentController ac)
+    void SelectUnit(Unit unit)
     {
         if (selectedUnits.Count < maxPositions)
         {
-            selectedUnits.Add(ac);
-            ac.isSelected = true;
+            selectedUnits.Add(unit);
+            unit.isSelected = true;
         }
     }
 
@@ -44,10 +58,10 @@ public class ControlEntities : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                AgentController ac = hit.collider.GetComponent<AgentController>();
-                if (ac != null)
+                Unit unit = hit.collider.GetComponent<Unit>();
+                if (unit != null)
                 {
-                    SelectUnit(ac);
+                    SelectUnit(unit);
                 }
             }
         }
@@ -86,22 +100,22 @@ public class ControlEntities : MonoBehaviour
         Vector2 min = groupSelectionBox.anchoredPosition - (groupSelectionBox.sizeDelta / 2);
         Vector2 max = groupSelectionBox.anchoredPosition + (groupSelectionBox.sizeDelta / 2);
 
-        foreach (AgentController ac in GameManager.instance.units)
+        foreach (Unit unit in GameManager.instance.units)
         {
-            Vector3 screenPosOfAC = cam.WorldToScreenPoint(ac.transform.position);
+            Vector3 screenPosOfAC = cam.WorldToScreenPoint(unit.transform.position);
 
             if (screenPosOfAC.x > min.x && screenPosOfAC.x < max.x && screenPosOfAC.y > min.y && screenPosOfAC.y < max.y)
             {
-                SelectUnit(ac);
+                SelectUnit(unit);
             }
         }
     }
 
     void ClearSelectedUnits()
     {
-        foreach (AgentController ac in selectedUnits)
+        foreach (Unit unit in selectedUnits)
         {
-            ac.isSelected = false;
+            unit.isSelected = false;
         }
 
         selectedUnits.Clear();
@@ -119,16 +133,26 @@ public class ControlEntities : MonoBehaviour
                 int unitCount = selectedUnits.Count;
                 if (unitCount == 1)
                 {
-                    selectedUnits[0].MoveToward(hit.point);
+                    selectedUnits[0].MoveTo(hit.point);
+                    selectedUnits[0].hasCustomJob = true;
+
+                    Fighter fighter = GetComponent<Fighter>();
+
+                    if (fighter != null)
+                    {
+                        fighter.state = FighterState.GOING;
+                    }
                 }
                 else
                 {
                     List<Vector3> positions = GetPositionsAroundArea(hit.point, new float[] { 2.5f, 5f, 7.5f }, positionsPerRing);
 
                     int index = 0;
-                    foreach (AgentController ac in selectedUnits)
+                    foreach (Unit unit in selectedUnits)
                     {
-                        ac.MoveToward(positions[index++]);
+                        unit.MoveTo(positions[index++]);
+                        unit.hasCustomJob = true;
+
                         if (index >= maxPositions)
                         {
                             break;
