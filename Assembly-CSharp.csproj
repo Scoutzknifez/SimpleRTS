@@ -60,13 +60,18 @@
     <Compile Include="Assets\Scripts\ControlEntities.cs" />
     <Compile Include="Assets\Scripts\CameraMover.cs" />
     <Compile Include="Assets\Scripts\NavMeshLink.cs" />
+    <Compile Include="Assets\Scripts\Gatherer.cs" />
+    <Compile Include="Assets\Scripts\Unit.cs" />
     <Compile Include="Assets\Scripts\NavMeshModifier.cs" />
     <Compile Include="Assets\Scripts\AgentController.cs" />
-    <Compile Include="Assets\Scripts\NavMeshModifierVolume.cs" />
-    <Compile Include="Assets\PlacementManager.cs" />
-    <Compile Include="Assets\Scripts\Unit.cs" />
-    <Compile Include="Assets\Scripts\Gatherer.cs" />
     <Compile Include="Assets\Scripts\Fighter.cs" />
+    <Compile Include="Assets\PlacementManager.cs" />
+    <Compile Include="Assets\Scripts\NavMeshModifierVolume.cs" />
+    <Compile Include="Assets\DisplayMoney.cs" />
+    <Compile Include="Assets\Scripts\Living.cs" />
+    <Compile Include="Assets\Scripts\Placeable.cs" />
+    <Compile Include="Assets\Scripts\Building.cs" />
+    <Compile Include="Assets\DrawSpawnArea.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
