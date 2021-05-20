@@ -6,7 +6,13 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public List<Unit> units = new List<Unit>();
+    public TeamEnum currentTeam = TeamEnum.GREEN;
+    public int startingMoney = 2500;
+    [HideInInspector]
+    public int money = 2000;
+
+    [HideInInspector]
+    public List<Living> units = new List<Living>();
 
     private void Awake()
     {
@@ -18,6 +24,27 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        money = startingMoney;
+    }
+
+    public bool TryTakeMoney(int amount)
+    {
+        if (!HasAmount(amount))
+        {
+            return false;
+        }
+
+        money -= amount;
+        return true;
+    }
+
+    public bool HasAmount(int amount)
+    {
+        return money >= amount;
     }
 }
 

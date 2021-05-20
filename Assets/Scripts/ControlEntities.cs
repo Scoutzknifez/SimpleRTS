@@ -12,7 +12,7 @@ public class ControlEntities : MonoBehaviour
     public Vector2 startGroupSelectionPosition;
 
     [Space]
-    public List<Unit> selectedUnits = new List<Unit>();
+    public List<Living> selectedUnits = new List<Living>();
 
     private static int[] positionsPerRing = new int[] { 6, 14, 24 };
     private static int maxPositions = 1 + positionsPerRing[0] + positionsPerRing[1] + positionsPerRing[2];
@@ -36,12 +36,12 @@ public class ControlEntities : MonoBehaviour
         MoveUnits();
     }
 
-    void SelectUnit(Unit unit)
+    void SelectUnit(Living living)
     {
         if (selectedUnits.Count < maxPositions)
         {
-            selectedUnits.Add(unit);
-            unit.isSelected = true;
+            selectedUnits.Add(living);
+            living.isSelected = true;
         }
     }
 
@@ -58,10 +58,10 @@ public class ControlEntities : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                Unit unit = hit.collider.GetComponent<Unit>();
-                if (unit != null)
+                Living living = hit.collider.GetComponent<Living>();
+                if (living != null)
                 {
-                    SelectUnit(unit);
+                    SelectUnit(living);
                 }
             }
         }
@@ -100,22 +100,22 @@ public class ControlEntities : MonoBehaviour
         Vector2 min = groupSelectionBox.anchoredPosition - (groupSelectionBox.sizeDelta / 2);
         Vector2 max = groupSelectionBox.anchoredPosition + (groupSelectionBox.sizeDelta / 2);
 
-        foreach (Unit unit in GameManager.instance.units)
+        foreach (Living living in GameManager.instance.units)
         {
-            Vector3 screenPosOfAC = cam.WorldToScreenPoint(unit.transform.position);
+            Vector3 screenPosOfAC = cam.WorldToScreenPoint(living.transform.position);
 
             if (screenPosOfAC.x > min.x && screenPosOfAC.x < max.x && screenPosOfAC.y > min.y && screenPosOfAC.y < max.y)
             {
-                SelectUnit(unit);
+                SelectUnit(living);
             }
         }
     }
 
     void ClearSelectedUnits()
     {
-        foreach (Unit unit in selectedUnits)
+        foreach (Living living in selectedUnits)
         {
-            unit.isSelected = false;
+            living.isSelected = false;
         }
 
         selectedUnits.Clear();
@@ -133,8 +133,15 @@ public class ControlEntities : MonoBehaviour
                 int unitCount = selectedUnits.Count;
                 if (unitCount == 1)
                 {
-                    selectedUnits[0].MoveTo(hit.point);
-                    selectedUnits[0].hasCustomJob = true;
+                    if (!(selectedUnits[0] is Unit))
+                    {
+                        return;
+                    }
+
+                    Unit unit = (Unit) selectedUnits[0];
+
+                    unit.MoveTo(hit.point);
+                    unit.hasCustomJob = true;
 
                     Fighter fighter = GetComponent<Fighter>();
 
@@ -148,8 +155,15 @@ public class ControlEntities : MonoBehaviour
                     List<Vector3> positions = GetPositionsAroundArea(hit.point, new float[] { 2.5f, 5f, 7.5f }, positionsPerRing);
 
                     int index = 0;
-                    foreach (Unit unit in selectedUnits)
+                    foreach (Living living in selectedUnits)
                     {
+                        if (!(living is Unit))
+                        {
+                            continue;
+                        }
+
+                        Unit unit = (Unit) living;
+
                         unit.MoveTo(positions[index++]);
                         unit.hasCustomJob = true;
 

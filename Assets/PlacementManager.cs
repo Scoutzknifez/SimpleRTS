@@ -7,15 +7,19 @@ public class PlacementManager : MonoBehaviour
 {
     public LayerMask DebugLayer;
     public Camera cam;
-
-    public GameObject attemptingToPlace = null;
+    
+    [HideInInspector]
+    public NameBuildingMapping attemptingToPlace = null;
+    [HideInInspector]
+    public GameObject onCursor;
     public Shader highlightShader;
     public NameBuildingMapping[] buildingMenu;
 
     // Update is called once per frame
     void Update()
     {
-        if (attemptingToPlace == null) {
+        if (attemptingToPlace == null || attemptingToPlace.buildingPrefab == null) {
+            onCursor = null;
             return;
         }
 
@@ -30,7 +34,7 @@ public class PlacementManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 1000f, ~DebugLayer))
         {
-            attemptingToPlace.transform.position = hit.point;
+            onCursor.transform.position = hit.point;
         }
     }
 
@@ -40,19 +44,49 @@ public class PlacementManager : MonoBehaviour
         {
             AttemptToPlace();
         }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            // Cancel placement
+            CleanCursor();
+        }
+    }
+
+    void CleanCursor()
+    {
+        Destroy(onCursor);
+        attemptingToPlace = null;
     }
 
     public void SetPlaceableOnCursor(string name)
     {
-        NameBuildingMapping mapping = Array.Find(buildingMenu, mapping => mapping.buildingName == name);
-        attemptingToPlace = Instantiate(mapping.buildingPrefab);
-
-        SetShader(highlightShader, attemptingToPlace.transform.GetChild(0).gameObject);
+        attemptingToPlace = Array.Find(buildingMenu, mapping => mapping.buildingName == name);
+        onCursor = Instantiate(attemptingToPlace.buildingPrefab);
+        SetShader(highlightShader, onCursor.transform.GetChild(0).gameObject);
     }
 
     public void AttemptToPlace()
     {
-        SetShader("Standard", attemptingToPlace.transform.GetChild(0).gameObject);
+        if (!GameManager.instance.TryTakeMoney(attemptingToPlace.cost))
+        {
+            CleanCursor();
+            return;
+        }
+
+        Placeable placeable = onCursor.GetComponent<Placeable>();
+        TeamEnum team = GameManager.instance.currentTeam;
+
+        if (placeable.GetType() == typeof(Building))
+        {
+            Building building = (Building)placeable;
+            building.Place(team);
+        } else
+        {
+            placeable.Place(team);
+        }
+
+
+
+        SetShader("Standard", onCursor.transform.GetChild(0).gameObject);
         attemptingToPlace = null;
     }
 
@@ -74,5 +108,6 @@ public class PlacementManager : MonoBehaviour
 public class NameBuildingMapping
 {
     public string buildingName;
+    public int cost;
     public GameObject buildingPrefab;
 }
