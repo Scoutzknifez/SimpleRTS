@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2255310002513489771}
   - component: {fileID: 2255310002513489770}
   - component: {fileID: 3510884140926845060}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Scout_Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,12 +58,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 2255310002513489769}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1
+  m_Radius: 1.5
   m_Speed: 14
   m_Acceleration: 4
   avoidancePriority: 50
   m_AngularSpeed: 75
-  m_StoppingDistance: 5
+  m_StoppingDistance: 22
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -99,22 +99,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8f8b4d7a09ecf448b97767c87d787e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1
-  health: 1
+  maxHealth: 200
+  health: 200
   teamEnum: 1
   selectedCircle: {fileID: 2255310003060491285}
   textCircle: {fileID: 2255310003060491287}
   isSelected: 0
   ac: {fileID: 2255310002513489770}
   hasCustomJob: 0
-  startLoc: {x: 0, y: 0, z: 0}
-  closestResource: {x: 10, y: 0, z: 150}
-  gatheringDistance: 3
-  maxLoad: 25
-  load: 0
   state: 0
   busy: 0
+  startLoc: {x: 0, y: 0, z: 0}
+  closestResource: {fileID: 0}
+  gatheringDistance: 20
   gatherTime: 10
+  maxLoad: 125
+  load: 0
 --- !u!1 &2255310003060491285
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 2255310003060491286}
   - component: {fileID: 2255310003060491272}
   - component: {fileID: 2255310003060491287}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 2255310003339958310}
   - component: {fileID: 2255310003339958296}
   - component: {fileID: 2255310003339958311}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: default
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7080532197779173415}
   - component: {fileID: 2732206904688366072}
   - component: {fileID: 2316234470056380702}
+  - component: {fileID: 6171550742234819303}
   m_Layer: 31
   m_Name: HQ
   m_TagString: Untagged
@@ -57,6 +58,10 @@ MonoBehaviour:
   placed: 0
   toSpawnOnPlace:
   - {fileID: 2255310002513489769, guid: 762e901f1cbb5e94b98e73d155b3add8, type: 3}
+  toEnableOnPlace:
+  - {fileID: 2732206904688366072}
+  - {fileID: 2316234470056380702}
+  - {fileID: 6171550742234819303}
   spawnArea: {fileID: 7414536557211584559}
 --- !u!65 &2732206904688366072
 BoxCollider:
@@ -67,7 +72,7 @@ BoxCollider:
   m_GameObject: {fileID: 4219836550980053866}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 17, y: 7, z: 13}
   m_Center: {x: -0.5, y: 3.5, z: -1.5}
@@ -80,10 +85,26 @@ BoxCollider:
   m_GameObject: {fileID: 4219836550980053866}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 5, y: 9, z: 7}
   m_Center: {x: -0.5, y: 11.5, z: 1}
+--- !u!208 &6171550742234819303
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4219836550980053866}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 9, y: 9, z: 6.25}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 9, z: -1.6}
+  m_TimeToStationary: 0.5
 --- !u!1 &4474375319307372632
 GameObject:
   m_ObjectHideFlags: 0

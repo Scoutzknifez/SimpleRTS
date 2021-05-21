@@ -4,22 +4,26 @@ using UnityEngine;
 
 public class Gatherer : Unit
 {
+    public GathererState state = GathererState.IDLE;
+    public bool busy = false;
+
     public Vector3 startLoc;
-    public Vector3 closestResource;
+    public ResourcePoint closestResource;
 
     public float gatheringDistance = 3f;
+    public float gatherTime = 3f;
 
     public int maxLoad = 5;
     public int load = 0;
-    public GathererState state = GathererState.IDLE;
-    public bool busy = false;
-    public float gatherTime = 3f;
+
 
     // Start is called before the first frame update
     new void Start()
     {
         base.Start();
+
         startLoc = transform.position;
+        closestResource = FindClosestResourcePoint();
     }
 
     private void FixedUpdate()
@@ -38,6 +42,7 @@ public class Gatherer : Unit
             }
             else if (state == GathererState.RETURNING)
             {
+                GameManager.instance.money += load;
                 load = 0;
             }
         }
@@ -48,10 +53,28 @@ public class Gatherer : Unit
         }
     }
 
-    private void OnDrawGizmos()
+    ResourcePoint FindClosestResourcePoint()
     {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(closestResource, 5f);
+        if (GameManager.instance.resourcePoints.Count == 0)
+        {
+            return null;
+        }
+
+        ResourcePoint closest = GameManager.instance.resourcePoints[0];
+        float closestDistance = Vector3.Distance(startLoc, closest.transform.position);
+
+        for (int i = 1; i < GameManager.instance.resourcePoints.Count; i++)
+        {
+            ResourcePoint currentPoint = GameManager.instance.resourcePoints[i];
+            float distance = Vector3.Distance(startLoc, currentPoint.transform.position);
+
+            if (distance < closestDistance)
+            {
+                closest = currentPoint;
+            }
+        }
+
+        return closest;
     }
 
     void EvaluateGoal()
@@ -59,7 +82,10 @@ public class Gatherer : Unit
         if (load < maxLoad && state != GathererState.GATHERING)
         {
             state = GathererState.GOING;
-            MoveTo(closestResource);
+            if (closestResource != null)
+            {
+                MoveTo(closestResource.transform.position);
+            }
         }
         else if (load >= maxLoad)
         {

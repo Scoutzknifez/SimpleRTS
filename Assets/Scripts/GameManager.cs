@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector]
     public List<Living> units = new List<Living>();
+    public List<ResourcePoint> resourcePoints = new List<ResourcePoint>();
 
     private void Awake()
     {
